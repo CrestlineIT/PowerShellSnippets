@@ -1,4 +1,9 @@
-﻿$domain = "YOUR_AD_DOMAIN"
+﻿# Author: Perry Stathopoulos
+# Company: Crestline IT Services
+# Use this script to run from a central server, like AD, to find all the computers with active users and where their documents folder points to
+# Set the variable $domain to your AD domain name
+
+$domain = "YOUR_AD_DOMAIN"
 
 function Get-LoggedOnUser { 
 #Requires -Version 2.0             
