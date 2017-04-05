@@ -9,7 +9,7 @@ $SourceFolder = "C:\Temp\A"
 $DestinationFolder = "C:\Temp\B"
 
 
-Get-ChildItem -Path $SourceFolder -Recurse | foreach{
+Get-ChildItem -Path $SourceFolder -File -Recurse | foreach{
     #Write-Host $_.FullName
     $RelativePath = $_.FullName.Substring($SourceFolder.Length)
     #Write-Host $RelativePath

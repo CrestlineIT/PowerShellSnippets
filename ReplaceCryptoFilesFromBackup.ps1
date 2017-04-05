@@ -10,7 +10,7 @@ $DestinationFolder = "C:\Temp\B"
 $ExtensionToRemove = ".LOL!"
 
 
-Get-ChildItem -Path $DestinationFolder -Filter ("*" + $ExtensionToRemove) -Recurse | foreach{
+Get-ChildItem -Path $DestinationFolder -File -Filter ("*" + $ExtensionToRemove) -Recurse | foreach{
     Write-Host $_.FullName
     $RelativePath = $_.FullName.Substring($DestinationFolder.Length).TrimEnd($ExtensionToRemove)
     Write-Host $RelativePath
