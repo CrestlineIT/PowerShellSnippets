@@ -7,21 +7,30 @@
 $SimulateCopy = $true
 $SourceFolder = "C:\Temp\A"
 $DestinationFolder = "C:\Temp\B"
-
+$cnt = 0
 
 Get-ChildItem -Path $SourceFolder -File -Recurse | foreach{
+	$cnt = $cnt + 1
     #Write-Host $_.FullName
     $RelativePath = $_.FullName.Substring($SourceFolder.Length)
     #Write-Host $RelativePath
 
     $FullDestination = Join-Path $DestinationFolder -ChildPath $RelativePath
-	#Write-Host $FullDestination
+	if ($cnt % 10000 -eq 0) {
+		Write-Host ("checked {0} files" -f ($cnt))
+	}
+	
 	if (!(Test-Path $FullDestination)) {
 		if ($SimulateCopy){
 			Write-Host ("Copying {0} to {1}...not really" -f ($_.FullName, $FullDestination))
 		}
 		else {
 			Write-Host ("Copying {0} to {1}..." -f ($_.FullName, $FullDestination))
+			# Create the folder structure and empty destination file, similar to
+			# the Unix 'touch' command
+			New-Item -ItemType File -Path $FullDestination -Force
+			#Now delete the dummy file
+			Remove-Item -Path $FullDestination
 			Copy-Item $_.FullName -Destination $FullDestination
 		}
 	}
