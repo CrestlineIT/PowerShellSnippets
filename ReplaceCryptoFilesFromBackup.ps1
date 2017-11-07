@@ -8,14 +8,19 @@ $SimulateCopy = $true
 $SourceFolder = "C:\Temp\A"
 $DestinationFolder = "C:\Temp\B"
 $ExtensionToRemove = ".LOL!"
+$cnt = 0
 
-
-Get-ChildItem -Path $DestinationFolder -Filter ("*" + $ExtensionToRemove) -Recurse | foreach{
+Get-ChildItem -Path $DestinationFolder -File -Filter ("*" + $ExtensionToRemove) -Recurse | foreach{
+	$cnt = $cnt + 1
     Write-Host $_.FullName
     $RelativePath = $_.FullName.Substring($DestinationFolder.Length).TrimEnd($ExtensionToRemove)
     Write-Host $RelativePath
 
     $GoodFullSource = Join-Path $SourceFolder -ChildPath $RelativePath
+	if ($cnt % 10000 -eq 0) {
+		Write-Host ("checked {0} files" -f ($cnt))
+	}
+	
     if ($SimulateCopy){
         Write-Host ("Copying {0} to {1}...not really" -f ($GoodFullSource, $_.FullName))
     }
