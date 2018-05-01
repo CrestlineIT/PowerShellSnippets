@@ -5,10 +5,7 @@ function Get-ADUsersLastLogon()
   $dcs = Get-ADDomainController -Filter {Name -like "*"}
   $users = Get-ADUser -Filter *
   $time = 0
-  $exportFilePath = "c:\temp\lastLogon.csv"
   $columns = "name,username,datetime"
-
-  Out-File -filepath $exportFilePath -force -InputObject $columns
 
   foreach($user in $users)
   {
@@ -28,7 +25,7 @@ function Get-ADUsersLastLogon()
 	$Object = New-Object PSObject
 	Add-Member -InputObject $Object -NotePropertyName "Name" -NotePropertyValue $user.Name
 	Add-Member -InputObject $Object -NotePropertyName "SamAccountName" -NotePropertyValue $user.SamAccountName
-	Add-Member -InputObject $Object -NotePropertyName "LastLogon" -NotePropertyValue $dt
+	Add-Member -InputObject $Object -NotePropertyName "LastLogon" -NotePropertyValue $dt.ToString("yyyy-MM-dd HH:mm")
 	
 	Write-Output $Object
 
