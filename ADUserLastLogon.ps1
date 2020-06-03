@@ -5,18 +5,21 @@ function Get-ADUsersLastLogon()
   $dcs = Get-ADDomainController -Filter {Name -like "*"}
   $users = Get-ADUser -Filter 'enabled -eq $true'
   $time = 0
-  $columns = "name,username,datetime"
 
   foreach($user in $users)
   {
     foreach($dc in $dcs)
     { 
       $hostname = $dc.HostName
-      $currentUser = Get-ADUser $user.SamAccountName | Get-ADObject -Server $hostname -Properties lastLogon
+      $currentUser = Get-ADUser $user.SamAccountName | Get-ADObject -Server $hostname -Properties lastLogon, LastLogonTimestamp
 
       if($currentUser.LastLogon -gt $time) 
       {
         $time = $currentUser.LastLogon
+      }
+	  if($currentUser.LastLogonTimestamp -gt $time) 
+      {
+        $time = $currentUser.LastLogonTimestamp
       }
     }
 
