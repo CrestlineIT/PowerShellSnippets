@@ -3,7 +3,7 @@ Import-Module ActiveDirectory
 function Get-ADUsersLastLogon()
 {
   $dcs = Get-ADDomainController -Filter {Name -like "*"}
-  $users = Get-ADUser -Filter *
+  $users = Get-ADUser -Filter 'enabled -eq $true'
   $time = 0
   $columns = "name,username,datetime"
 
